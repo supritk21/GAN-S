@@ -1,53 +1,92 @@
-<h3>GAN</h3>
-In this project does implementation and evaluation og generative model GAN. 
-This propject was part of my curriculam I did in iisc of course advance deep generaative model, taught by pratosh sir.
+# GAN Overview
 
-GAN overview. 
-GAN is generative model. We have image data {(x<sub>i</sub>)}<sub>i=1</sub><sup>N</sup> , where N is number of images we have and x<sub>i</sub> &in; R<sup>d</sup>. and these images are the samples from P(x). Aim of generative model is to estimate the P(x) using the training data and sample new data points from it. 
-
-GAN stands for generative adverserial network. In which we do adverserial traing to train our model to generate the images. we train our model by assuming that images are generated from some lover dimensional subspace which has some distribution. And we train the model to learn that distribution from which images are generated. For that we assume some distribution and try to minimise the difference between the true and the assumed distribution. To measure the difference between two distrubution we use family of f-divergence specificaly we used Jensen-Shannon (JS) divergence. 
-
-JSD(P||Q) = (KL(P||M)+KL(Q||M))/2
-
-and M = (P+Q)/2
-
-and  KL(P||M) is Kullback-Leibler divergence between P AND M. 
-
-KL(P || M) = ∫ p(x) * log(p(x)/q(x)) dx -- kl divergence for contineous function.
-
-In GAN we aims to minimise the JS divergence between true distribution and the the distribution we are learning.
-
-But wait if we know true distribution why to learn the new distribution. Actually we don't know the true distribution. we assumed the distribution is cpmming from the normal distribution. 
-But this is hardcoding the assumption, what if the true data is not comming from the normal distribution. No worries during the traing of our neural network the starting layer of neural network will learn the true distribution. but is this valid to say? yes because as per the universal approximation theorem a large neural network can able to learn any function. and our learning objective will take care of all this. 
+Generative Adversarial Networks (GANs) are a class of generative models used to learn the distribution of data and generate new samples from that distribution. The objective of a GAN is to estimate the true data distribution, P(x) , based on a given training dataset consisting of images \( \{  x<sub>i</sub> \}<sub>{i=1 to N} \), where  \( x<sub>i</sub> ∈ R<sup>d</sup>
+\), and \( N \) is the total number of images.
 
 
-let θ be the parameter of generator, which take input z~N(0,I) normal dstribution
+## What is a GAN?
+
+GAN stands for **Generative Adversarial Network**, and it works by employing a novel approach called **adversarial training**. The idea behind GANs is to train a model to generate images by assuming that the data is drawn from a lower-dimensional subspace with some underlying distribution. The model is then trained to learn this distribution by minimizing the difference between the true distribution and the assumed distribution.
+
+To measure the difference between the true distribution \( P(x) \) and the assumed distribution \( Q(x) \), we use the **Jensen-Shannon Divergence (JSD)**, which is a type of f-divergence:
+
+$$
+JSD(P || Q) = \frac{1}{2} \left( KL(P || M) + KL(Q || M) \right)
+$$
+
+Where:
+
+$$
+M = \frac{P + Q}{2}
+$$
+
+And:
+
+$$
+KL(P || M)
+$$
+
+## Goal of GAN
+
+In GANs, our goal is to minimize the **Jensen-Shannon Divergence** between the true distribution \( P(x) \) and the distribution we are learning, represented by \( Q(x) \). 
+
+### Why Learn a New Distribution?
+
+You might wonder: *"If we already know the true distribution \( P(x) \), why bother learning a new distribution?"* 
+
+The key point is that **we don't know the true distribution** in real-world problems. The assumption is often that the data comes from a normal distribution, but this is a simplification and not necessarily true.
+
+The beauty of GANs is that during the training process, the neural network will learn the true underlying distribution. This is because, as per the **Universal Approximation Theorem**, a sufficiently large neural network can approximate any function. Hence, the model can adjust and learn the true distribution through adversarial training.
+
+## Conclusion
+
+To summarize, GANs are powerful models that learn the data distribution by training a neural network using adversarial methods. They aim to minimize the difference between the true distribution and the learned distribution, ultimately generating new samples that resemble the original data.
+
+# Maathematical aspects.
+
+Let θ be the parameter of the generator, which takes input \( z \sim \mathcal{N}(0, I) \) (a normal distribution).
+
 ![alt text](images/image-5.png)
 
-the generator is learning the distribution as well as doin sampleling to generate the image.
-we try to learn the optimal parameter θ<sup>*</sup> which minimise the js divergence between the true distribution and the approximate distribution via the neural network. 
+The generator is learning the distribution as well as performing sampling to generate the image. We try to learn the optimal parameter \( θ^* \), which minimizes the Jensen-Shannon (JS) divergence between the true distribution and the approximate distribution via the neural network.
 
 ![alt text](images/image-7.png)
 
-after simplifying we get below expression for the θ<sup>*</sup>. 
+After simplifying, we get the following expression for \( θ^* \):
 
 ![alt text](images/image-6.png)
-where  <br>
-θ - parameter of generator network, <br>
-Φ - parameter of critic network, <br>
-E<sub>x~p<sub>data</sub></sub> - expection over real data distribution. <br>
-E<sub>x~p<sub>generator</sub></sub> - expection over generator's data distribution. <br>
-f<sup>*</sup> - convex conjugate of the divergence function. <br>
-T<sub>Φ</sub>(x) - discriminator function parameterized by Φ. <br>
-For the js divergence 
+
+Where:
+- \( θ \) - parameter of the generator network,
+- \( Φ \) - parameter of the critic (discriminator) network,
+- \( \mathbb{E}<sub>x ~ p<sub>data</sub></sub> \) - expectation over the real data distribution,
+- \( \mathbb{E}<sub>x ~ p<sub>generator</sub></sub> \) - expectation over the generator's data distribution,
+- \( f^* \) - convex conjugate of the divergence function,
+- \( T<sub>Φ</sub>(x) \) - discriminator function parameterized by \( Φ \).
+
+For the JS divergence, we have:
+
 ![alt text](images/image-8.png)
 
-and further simplifying we get
-![alt text](images/image-9.png)
-where D<sub>Φ</sub>(x) gives output of critic network between 0 and 1. <br>
+And further simplifying, we get:
 
-our objkecive is such that to get θ<sup>*</sup> we try to maximise the objective function w.r.t. Φ and minimise w.r.t. θ.
-when we give true image ie x\~p<sub>data</sub> only first term will be concidered, then to maximise w.r.t  Φ we want the first parameter to be maximise so D<sub>Φ</sub>(x) must be 1, and when x\~p<sub>generator</sub> then the second term will be considered then to maximise w.r.t  Φ we want the second parameter to be minimise so D<sub>Φ</sub>(X̂) must be = 0. so for true image critic will try to maximise the output and for generated image by generator the critic will try to minimise the output. thus there is an adverserial training going on here. thus named generative adverserial network. 
+![alt text](images/image-9.png)
+
+Where \( D<sub>Φ</sub>(x) \) gives the output of the critic network, which ranges between 0 and 1.
+
+### Objective and Training
+
+Our objective is to find \( θ^* \) by maximizing the objective function with respect to \( Φ \) and minimizing with respect to \( θ \). The process works as follows:
+
+- When we provide a true image (\( x \sim p<sub>data</sub> \)), only the first term will be considered. To maximize with respect to \( Φ \), we want the first term to be maximized, so \( D<sub>Φ</sub>(x) \) must be 1.
+- When \( x \sim p<sub>generator</sub> \), the second term will be considered. To maximize with respect to \( Φ \), we want the second term to be minimized, so \( D<sub>Φ</sub>(\hat{x}) \) must be 0.
+
+Thus, for true images, the critic will try to maximize the output, and for generated images, the critic will try to minimize the output. This adversarial training process leads to the creation of a **Generative Adversarial Network**.
+
+### Summary
+
+The GAN framework uses adversarial training, where the generator and critic network continuously improve by optimizing each other's performance. The generator aims to create realistic data, while the critic evaluates and guides the generator's learning process.
+
 
 ### WGAN
 Also called Wasserstein GAN. Instead of using the JS divergence to measure the distance between true distributions, we use Earth-Mover (EM) distance. The problem with JS divergence is that it does not penalize the difference well.
