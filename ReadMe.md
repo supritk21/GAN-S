@@ -47,7 +47,7 @@ and further simplifying we get
 where D<sub>Φ</sub>(x) gives output of critic network between 0 and 1. <br>
 
 our objkecive is such that to get θ<sup>*</sup> we try to maximise the objective function w.r.t. Φ and minimise w.r.t. θ.
-when we give true image ie x~p<sub>data</sub> only first term will be concidered, then to maximise w.r.t  Φ we want the first parameter to be maximise so D<sub>Φ</sub>(x) must be 1, and when x~p<sub>generator</sub> then the second term will be considered then to maximise w.r.t  Φ we want the second parameter to be minimise so D<sub>Φ</sub>(X̂) must be = 0. so for true image critic will try to maximise the output and for generated image by generator the critic will try to minimise the output. thus there is an adverserial training going on here. thus named generative adverserial network. 
+when we give true image ie x\~p<sub>data</sub> only first term will be concidered, then to maximise w.r.t  Φ we want the first parameter to be maximise so D<sub>Φ</sub>(x) must be 1, and when x\~p<sub>generator</sub> then the second term will be considered then to maximise w.r.t  Φ we want the second parameter to be minimise so D<sub>Φ</sub>(X̂) must be = 0. so for true image critic will try to maximise the output and for generated image by generator the critic will try to minimise the output. thus there is an adverserial training going on here. thus named generative adverserial network. 
 
 ### WGAN
 Also called Wasserstein GAN. Instead of using the JS divergence to measure the distance between true distributions, we use Earth-Mover (EM) distance. The problem with JS divergence is that it does not penalize the difference well.
