@@ -22,16 +22,16 @@ But this is hardcoding the assumption, what if the true data is not comming from
 
 
 let θ be the parameter of generator, which take input z~N(0,I) normal dstribution
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
 the generator is learning the distribution as well as doin sampleling to generate the image.
 we try to learn the optimal parameter θ<sup>*</sup> which minimise the js divergence between the true distribution and the approximate distribution via the neural network. 
 
-![alt text](image-7.png)
+![alt text](images/image-7.png)
 
 after simplifying we get below expression for the θ<sup>*</sup>. 
 
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 where  <br>
 θ - parameter of generator network, <br>
 Φ - parameter of critic network, <br>
@@ -40,10 +40,10 @@ E<sub>x~p<sub>generator</sub></sub> - expection over generator's data distributi
 f<sup>*</sup> - convex conjugate of the divergence function. <br>
 T<sub>Φ</sub>(x) - discriminator function parameterized by Φ. <br>
 For the js divergence 
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
 and further simplifying we get
-![alt text](image-9.png)
+![alt text](images/image-9.png)
 where D<sub>Φ</sub>(x) gives output of critic network between 0 and 1. <br>
 
 our objkecive is such that to get θ<sup>*</sup> we try to maximise the objective function w.r.t. Φ and minimise w.r.t. θ.
